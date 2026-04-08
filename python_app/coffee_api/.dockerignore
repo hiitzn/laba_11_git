@@ -1,0 +1,43 @@
+﻿# Version control
+.git
+.gitignore
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+
+# Tests
+tests/
+test_*.py
+conftest.py
+pytest.ini
+.pytest_cache/
+
+# Coverage & linting
+.coverage
+htmlcov/
+.ruff_cache/
+.mypy_cache/
+
+# Environment & secrets
+.env
+.env.*
+*.env
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# IDEs
+.vscode/
+.idea/
+
+# macOS
+.DS_Store
+
+# Local database (will live in /app/data inside the container)
+*.db
