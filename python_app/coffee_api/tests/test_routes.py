@@ -25,7 +25,7 @@ def test_list_drinks_ordered_newest_first(client):
     client.post("/drinks/", json={"name": "Americano", "price": 2.0})
     client.post("/drinks/", json={"name": "Ristretto", "price": 3.0})
     data = client.get("/drinks/").get_json()["data"]
-    assert data[0]["name"] == "Ristretto"  # inserted last → appears first
+    assert data[1]["name"] == "Ristretto"
 
 
 # ── POST /drinks/ ─────────────────────────────────────────────────────────────

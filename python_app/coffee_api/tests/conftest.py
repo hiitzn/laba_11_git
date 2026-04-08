@@ -1,7 +1,12 @@
 ﻿"""Shared pytest fixtures for Coffee Menu API tests."""
 
-import pytest
+import sys
+import os
 
+# Добавляем родительскую папку в путь поиска модулей
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+import pytest
 from app import create_app
 from models import Database
 from schemas import CreateDrinkSchema, UpdateDrinkSchema
