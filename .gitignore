@@ -1,0 +1,41 @@
+﻿# Python
+__pycache__/
+*.py[cod]
+*.pyc
+*.pyo
+*.pyd
+python_folder/__pycache__/
+
+# Executables
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+py_folder/main_go.exe
+
+# IDE
+.vscode/
+.idea/
+.vs/
+
+# Go
+go.sum
+go.mod
+/bin/
+/dist/
+/vendor/
+*.test
+
+# Rust
+**/target/
+**/*.rs.bk
+**/Cargo.lock
+rust_folder/target/
+rust_folder/Cargo.lock
+
+# Environment — contains secrets, never commit
+.env
+
+# Go build artifacts
+/password_service

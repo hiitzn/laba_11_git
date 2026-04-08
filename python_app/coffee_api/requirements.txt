@@ -1,0 +1,12 @@
+﻿# ── Runtime ───────────────────────────────────────────────────────────────────
+flask>=3.0              # Web framework
+# sqlite3 is part of Python stdlib — no separate package needed
+
+# ── Testing ───────────────────────────────────────────────────────────────────
+pytest>=8.0             # Test runner (preferred)
+pytest-cov>=5.0         # Coverage reporting with pytest
+# unittest is part of Python stdlib — always available as fallback
+
+# ── Development helpers (optional) ───────────────────────────────────────────
+# ruff>=0.4             # Fast linter + formatter (replaces flake8/black)
+# mypy>=1.10            # Static type checking
