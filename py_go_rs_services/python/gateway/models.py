@@ -1,4 +1,4 @@
-﻿from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, field_validator
 
 
 class OrderRequest(BaseModel):
@@ -23,6 +23,7 @@ class OrderResponse(BaseModel):
 
 class DownstreamOrderPayload(BaseModel):
     """Payload forwarded to the Go order service."""
+
     item: str
     price: float
     loyalty_card: bool

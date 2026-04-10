@@ -1,4 +1,4 @@
-﻿import os
+import os
 
 MENU: dict[str, float] = {
     "espresso": 2.50,

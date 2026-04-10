@@ -1,4 +1,4 @@
-﻿import httpx
+import httpx
 from fastapi import APIRouter, Depends, HTTPException, Request
 
 from gateway.client import OrderServiceClient

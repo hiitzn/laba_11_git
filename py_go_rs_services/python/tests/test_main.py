@@ -19,8 +19,13 @@ from gateway.config import MENU, ORDER_SERVICE_URL
 
 def _stub(item: str, price: float, points: int, order_id: int = 1) -> dict:
     """Build a minimal order-service response payload."""
-    return {"id": order_id, "item": item, "price": price,
-            "points": points, "status": "completed"}
+    return {
+        "id": order_id,
+        "item": item,
+        "price": price,
+        "points": points,
+        "status": "completed",
+    }
 
 
 # ── POST /order ───────────────────────────────────────────────────────────────
@@ -29,8 +34,8 @@ def _stub(item: str, price: float, points: int, order_id: int = 1) -> dict:
 @pytest.mark.parametrize(
     "item, loyalty_card, expected_points",
     [
-        ("espresso",   False, 10),
-        ("latte",      True,  15),
+        ("espresso", False, 10),
+        ("latte", True, 15),
         ("cappuccino", False, 10),
     ],
 )
@@ -108,9 +113,7 @@ def test_get_order_returns_order(client):
 
 @respx.mock
 def test_get_order_not_found_returns_404(client):
-    respx.get(f"{ORDER_SERVICE_URL}/order/999").mock(
-        return_value=httpx.Response(404)
-    )
+    respx.get(f"{ORDER_SERVICE_URL}/order/999").mock(return_value=httpx.Response(404))
 
     resp = client.get("/order/999")
 

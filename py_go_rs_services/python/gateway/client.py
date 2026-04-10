@@ -1,4 +1,4 @@
-﻿import httpx
+import httpx
 
 from gateway.config import HTTP_TIMEOUT
 from gateway.models import DownstreamOrderPayload, OrderResponse
