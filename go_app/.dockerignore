@@ -1,0 +1,20 @@
+﻿# Тесты — не нужны в образе
+*_test.go
+
+# Git
+.git
+.gitignore
+
+# Docker-файлы (не копировать сами себя в контекст)
+Dockerfile
+.dockerignore
+
+# Бинарники и артефакты сборки
+*.exe
+*.out
+student-api
+
+# IDE и OS
+.idea/
+.vscode/
+*.DS_Store
