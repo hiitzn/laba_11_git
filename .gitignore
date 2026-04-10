@@ -20,8 +20,6 @@ py_folder/main_go.exe
 .vs/
 
 # Go
-go.sum
-go.mod
 /bin/
 /dist/
 /vendor/
