@@ -110,7 +110,7 @@ jobs:
 
       - uses: docker/build-push-action@v5
         with:
-          context: ./py_go_rs_services/rust
+          context: ./py_go_rs_services/go
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/go-order-service:latest
           cache-from: type=gha
@@ -132,7 +132,7 @@ jobs:
 
       - uses: docker/build-push-action@v5
         with:
-          context: ./py_go_rs_services/rust
+          context: ./py_go_rs_services/python
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/python-gateway:latest
           cache-from: type=gha
