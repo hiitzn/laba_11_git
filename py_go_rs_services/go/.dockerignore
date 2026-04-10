@@ -1,0 +1,13 @@
+﻿# Local SQLite database — must never be baked into the image.
+orders.db
+*.db
+
+# Development and test artefacts.
+*_test.go
+Makefile
+*.md
+
+# Version control and editor files.
+.git
+.gitignore
+.DS_Store

@@ -1,0 +1,60 @@
+services:
+
+  rust:
+    build: ./rust
+    ports:
+      - "8081:8081"
+    restart: unless-stopped
+    healthcheck:
+      test:
+        - "CMD-SHELL"
+        - |
+          curl -sf -X POST http://localhost:8081/points \
+            -H 'Content-Type: application/json' \
+            -d '{"item":"espresso","loyalty_card":false}' \
+          | grep -q '"points"'
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  go:
+    build: ./go
+    ports:
+      - "8082:8080"
+    restart: unless-stopped
+    depends_on:
+      rust:
+        condition: service_healthy
+    environment:
+      - LOYALTY_URL=http://rust:8081
+      - DB_PATH=/app/data/orders.db
+    volumes:
+      - orders-data:/app/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:8080/health | grep -q '\"ok\"'"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
+
+  python:
+    build: ./python
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+    depends_on:
+      go:
+        condition: service_healthy
+    environment:
+      - ORDER_SERVICE_URL=http://go:8080
+      - HTTP_TIMEOUT=10.0
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:8000/docs | grep -q 'swagger'"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+
+volumes:
+  orders-data:
