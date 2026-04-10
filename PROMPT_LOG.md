@@ -138,4 +138,6 @@ A: Push в main
 2)Пушишь проект на GitHub
 3)Заходишь в репозиторий → Settings → Secrets and variables → Actions → New repository secret — добавляешь DOCKERHUB_USERNAME и DOCKERHUB_TOKEN
 4)Делаешь любой коммит в main — пайплайн запустится автоматически
-
+### Промпт 2
+**Промпт:** Папка .github должна хранится в корне проекта?
+**Результат:** Да, иначе если ваш файл .github/workflows/ci.yml (или с другим именем) не лежит в корневой папке репозитория по пути .github/workflows/..., то GitHub Actions его не увидит
