@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: rust
+        working-directory: py_go_rs_services/rust
     steps:
       - uses: actions/checkout@v4
 
@@ -34,7 +34,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: go
+        working-directory: py_go_rs_services/go
     steps:
       - uses: actions/checkout@v4
 
@@ -51,7 +51,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: python
+        working-directory: py_go_rs_services/python
     steps:
       - uses: actions/checkout@v4
 
@@ -88,7 +88,7 @@ jobs:
 
       - uses: docker/build-push-action@v5
         with:
-          context: ./rust
+          context: ./py_go_rs_services/rust
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/rust-loyalty-service:latest
           cache-from: type=gha
@@ -110,7 +110,7 @@ jobs:
 
       - uses: docker/build-push-action@v5
         with:
-          context: ./go
+          context: ./py_go_rs_services/rust
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/go-order-service:latest
           cache-from: type=gha
@@ -132,7 +132,7 @@ jobs:
 
       - uses: docker/build-push-action@v5
         with:
-          context: ./python
+          context: ./py_go_rs_services/rust
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/python-gateway:latest
           cache-from: type=gha
