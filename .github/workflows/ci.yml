@@ -23,8 +23,8 @@ jobs:
           path: |
             ~/.cargo/registry
             ~/.cargo/git
-            rust/target
-          key: rust-${{ hashFiles('rust/Cargo.lock') }}
+            py_go_rs_services/rust/target
+          key: rust-${{ hashFiles('py_go_rs_services/rust/Cargo.lock') }}
 
       - name: Run tests
         run: cargo test
@@ -40,8 +40,8 @@ jobs:
 
       - uses: actions/setup-go@v5
         with:
-          go-version-file: go/go.mod
-          cache-dependency-path: go/go.sum
+          go-version-file: py_go_rs_services/go/go.mod
+          cache-dependency-path: py_go_rs_services/go/go.sum
 
       - name: Run tests
         run: go test ./... -v
@@ -59,7 +59,7 @@ jobs:
         with:
           python-version: "3.12"
           cache: pip
-          cache-dependency-path: python/requirements-dev.txt
+          cache-dependency-path: py_go_rs_services/python/requirements-dev.txt
 
       - name: Install dependencies
         run: pip install -r requirements-dev.txt
