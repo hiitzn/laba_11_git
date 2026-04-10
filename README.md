@@ -169,13 +169,7 @@ docker images | findstr student-api
 Статическая компиляция (`CGO_ENABLED=0`, `-ldflags="-s -w"`) обеспечивает запуск в абсолютно пустом `scratch`-образе без каких-либо зависимостей. Финальный образ весит ~6–8 MB.
 -healthcheck опущен из-за отсутствия утилит в scratch
 
-
-
-
-
-
-
-
+---
 
 # CI/CD
 Задание 3. Настроить CI/CD, который собирает и пушит образы для всех трёх языков. (для приложения из 5 задания средней сложности)
@@ -242,5 +236,7 @@ Docker Hub → Account Settings → Security → New Access Token
 ## Где смотреть результаты
 - **Логи пайплайна** — вкладка Actions в репозитории на GitHub
 - **Образы** — `hub.docker.com/u/твой_логин`
+Скриншот неудачного выполнения:
+![CI/CD Пайплайн](screenshots/ex_3_incr_dif_unsuccess.jpg)
 Скриншот выполнения:
-![Пайплайн](screenshots/)
+![CI/CD Пайплайн](screenshots/ex_3_incr_dif_success.jpg)
