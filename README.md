@@ -93,6 +93,39 @@ Docker проверяет `GET /visitors` каждые 30 секунд (тайм
 docker inspect --format='{{.State.Health.Status}}' <container_id>
 ```
 
+---
+
+Задание 5. Создать docker-compose.yml, поднимающий Python, Go и Rust сервисы.
+
+Три сервиса, связанные через Docker Compose:
+
+| Сервис | Язык | Порт | Задача |
+|---|---|---|---|
+| `python` | Python / FastAPI | 8000 | Принимает запросы, валидирует, проксирует |
+| `go` | Go | 8082 | Создаёт и хранит заказы (SQLite) |
+| `rust` | Rust / actix-web | 8081 | Считает баллы лояльности |
+
+## Быстрый старт
+
+```bash
+make up        # собрать образы и поднять все сервисы
+make down      # остановить и удалить volumes
+```
+Скриншот выполнения:
+![Успешный запуск сервисов](screenshots/ex_5_make_up.jpg)
+Скриншот выполнения:
+![Docker Desktop](screenshots/ex_5_docker_desktop.jpg)
+
+## Переменные окружения
+
+| Переменная | Сервис | Дефолт | Описание |
+|---|---|---|---|
+| `ORDER_SERVICE_URL` | Python | `http://localhost:8080` | URL Go-сервиса |
+| `HTTP_TIMEOUT` | Python | `10.0` | Таймаут запросов к Go (сек) |
+| `LOYALTY_URL` | Go | `http://localhost:8081` | URL Rust-сервиса |
+| `DB_PATH` | Go | `./orders.db` | Путь к SQLite базе |
+| `PORT` | Go, Rust | `8080` / `8081` | Порт сервиса |
+
 
 ---
 
