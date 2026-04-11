@@ -3,7 +3,7 @@ services:
   rust:
     build: ./rust
     ports:
-      - "8081:8081"
+      - "${RUST_PORT:-8081}:8081"
     restart: unless-stopped
     healthcheck:
       test:
@@ -21,14 +21,14 @@ services:
   go:
     build: ./go
     ports:
-      - "8082:8080"
+      - "${GO_PORT:-8082}:8080"
     restart: unless-stopped
     depends_on:
       rust:
         condition: service_healthy
     environment:
-      - LOYALTY_URL=http://rust:8081
-      - DB_PATH=/app/data/orders.db
+      - LOYALTY_URL=${LOYALTY_URL:-http://rust:8081}
+      - DB_PATH=${DB_PATH:-/app/data/orders.db}
     volumes:
       - orders-data:/app/data
     healthcheck:
@@ -41,14 +41,14 @@ services:
   python:
     build: ./python
     ports:
-      - "8000:8000"
+      - "${PYTHON_PORT:-8000}:8000"
     restart: unless-stopped
     depends_on:
       go:
         condition: service_healthy
     environment:
-      - ORDER_SERVICE_URL=http://go:8080
-      - HTTP_TIMEOUT=10.0
+      - ORDER_SERVICE_URL=${ORDER_SERVICE_URL:-http://go:8080}
+      - HTTP_TIMEOUT=${HTTP_TIMEOUT:-10.0}
     healthcheck:
       test: ["CMD-SHELL", "curl -sf http://localhost:8000/docs | grep -q 'swagger'"]
       interval: 5s

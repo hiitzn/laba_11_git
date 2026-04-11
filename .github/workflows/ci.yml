@@ -1,17 +1,25 @@
 ﻿name: CI/CD
+
 on:
   push:
     branches:
       - main
 
+env:
+  SERVICES_PATH: py_go_rs_services
+  RUST_IMAGE: rust-loyalty-service
+  GO_IMAGE: go-order-service
+  PYTHON_IMAGE: python-gateway
+
 jobs:
-  # ── Tests ────────────────────────────────────────────────────────────────────
+  # ── Tests ──────────────────────────────────────────────────────────────────
+
   test-rust:
     name: Rust tests
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: py_go_rs_services/rust  # ✅ работает только для run:
+        working-directory: ${{ env.SERVICES_PATH }}/rust
     steps:
       - uses: actions/checkout@v4
       - name: Cache Cargo registry
@@ -20,8 +28,8 @@ jobs:
           path: |
             ~/.cargo/registry
             ~/.cargo/git
-            py_go_rs_services/rust/target           # ✅ полный путь от корня репо
-          key: rust-${{ hashFiles('py_go_rs_services/rust/Cargo.lock') }}
+            ${{ env.SERVICES_PATH }}/rust/target
+          key: rust-${{ hashFiles(format('{0}/rust/Cargo.lock', env.SERVICES_PATH)) }}
       - name: Run tests
         run: cargo test
 
@@ -30,13 +38,13 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: py_go_rs_services/go
+        working-directory: ${{ env.SERVICES_PATH }}/go
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
         with:
-          go-version-file: py_go_rs_services/go/go.mod       # ✅ полный путь
-          cache-dependency-path: py_go_rs_services/go/go.sum # ✅ полный путь
+          go-version-file: ${{ env.SERVICES_PATH }}/go/go.mod
+          cache-dependency-path: ${{ env.SERVICES_PATH }}/go/go.sum
       - name: Run tests
         run: go test ./... -v
 
@@ -45,14 +53,14 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: py_go_rs_services/python
+        working-directory: ${{ env.SERVICES_PATH }}/python
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
           cache: pip
-          cache-dependency-path: py_go_rs_services/python/requirements-dev.txt  # ✅ полный путь
+          cache-dependency-path: ${{ env.SERVICES_PATH }}/python/requirements-dev.txt
       - name: Install dependencies
         run: pip install -r requirements-dev.txt
       - name: Lint
@@ -60,7 +68,8 @@ jobs:
       - name: Run tests
         run: pytest -v
 
-  # ── Build & Push ─────────────────────────────────────────────────────────────
+  # ── Build & Push ───────────────────────────────────────────────────────────
+
   build-rust:
     name: Build & push rust
     runs-on: ubuntu-latest
@@ -74,9 +83,11 @@ jobs:
       - uses: docker/setup-buildx-action@v3
       - uses: docker/build-push-action@v5
         with:
-          context: ./py_go_rs_services/rust
+          context: ./${{ env.SERVICES_PATH }}/rust
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/rust-loyalty-service:latest
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.RUST_IMAGE }}:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.RUST_IMAGE }}:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -93,9 +104,11 @@ jobs:
       - uses: docker/setup-buildx-action@v3
       - uses: docker/build-push-action@v5
         with:
-          context: ./py_go_rs_services/go
+          context: ./${{ env.SERVICES_PATH }}/go
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/go-order-service:latest
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.GO_IMAGE }}:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.GO_IMAGE }}:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -112,8 +125,10 @@ jobs:
       - uses: docker/setup-buildx-action@v3
       - uses: docker/build-push-action@v5
         with:
-          context: ./py_go_rs_services/python
+          context: ./${{ env.SERVICES_PATH }}/python
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/python-gateway:latest
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.PYTHON_IMAGE }}:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.PYTHON_IMAGE }}:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
